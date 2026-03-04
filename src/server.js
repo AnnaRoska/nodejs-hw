@@ -7,7 +7,7 @@ import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import notesRoutes from './routes/notesRoutes.js';
-
+import { errors } from 'celebrate';
 
 
 const app = express();
@@ -20,16 +20,19 @@ app.use(express.json({
 }));                     // 2. Парсинг JSON-тіла
 app.use(cors());         // 3. Дозвіл для запитів з інших доменів
 
-
 // підключаємо групу маршрутів для роботи з нотатками
 app.use(notesRoutes);
   
 // 404 — якщо маршрут не знайдено
 app.use(notFoundHandler);
 
+// обробка помилок від celebrate (валідація)
+app.use(errors());
+
+
+
 // Error — якщо під час запиту виникла помилка
 app.use(errorHandler);
-
 
 // підключення до MongoDB
 await connectMongoDB();
