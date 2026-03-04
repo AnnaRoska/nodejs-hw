@@ -9,18 +9,18 @@ export const getAllNotes = async (req, res) => {
     notesQuery.where('tag').equals(tag);
   }
   if (search) {
-    notesQuery.find({ $text: { $search: search } });
+    notesQuery.find().where('$text').equals({ $search: search });
   }
   
-  const [totalItems, notes] = await Promise.all([
+  const [totalNotes, notes] = await Promise.all([
     notesQuery.clone().countDocuments(),
     notesQuery.skip(skip).limit(perPage),
   ]);
-  const totalPages = Math.ceil(totalItems / perPage);
+  const totalPages = Math.ceil(totalNotes / perPage);
   res.status(200).json({
       page,
       perPage,
-      totalItems,
+      totalNotes,
       totalPages,
       notes,
     });
@@ -32,9 +32,7 @@ export const getNoteById = async (req, res) => {
     if (!note) {
       throw createHttpError(404, 'Note not found');
     }
-
   res.status(200).json(note);
-    console.log(note);
 };
 
 export const createNote = async (req, res) => {
