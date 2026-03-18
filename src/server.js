@@ -9,11 +9,20 @@ import { errorHandler } from './middleware/errorHandler.js';
 import notesRoutes from './routes/notesRoutes.js';
 import { errors } from 'celebrate';
 
+import authRoutes from './routes/authRoutes.js';
+import cookieParser from "cookie-parser";
 
 const app = express();
 const PORT = Number.parseInt(process.env.PORT, 10) || 3000;
 
 // Глобальні middleware
+app.use(cookieParser()); // 0. Парсинг cookie
+app.use(logger);         // 1. Логер першим — бачить усі запити
+app.use(express.json({
+  type: ['application/json', 'application/vnd.api+json'],
+}));                     // 2. Парсинг JSON-тіла
+app.use(cors());         // 3. Дозвіл для запитів з інших доменів
+
 app.use(logger);         // 1. Логер першим — бачить усі запити
 app.use(express.json({
   type: ['application/json', 'application/vnd.api+json'],
@@ -22,6 +31,8 @@ app.use(cors());         // 3. Дозвіл для запитів з інших 
 
 // підключаємо групу маршрутів для роботи з нотатками
 app.use(notesRoutes);
+
+app.use(authRoutes);
   
 // 404 — якщо маршрут не знайдено
 app.use(notFoundHandler);
