@@ -23,12 +23,6 @@ app.use(express.json({
 }));                     // 2. Парсинг JSON-тіла
 app.use(cors());         // 3. Дозвіл для запитів з інших доменів
 
-app.use(logger);         // 1. Логер першим — бачить усі запити
-app.use(express.json({
-  type: ['application/json', 'application/vnd.api+json'],
-}));                     // 2. Парсинг JSON-тіла
-app.use(cors());         // 3. Дозвіл для запитів з інших доменів
-
 // підключаємо групу маршрутів для роботи з нотатками
 app.use(notesRoutes);
 

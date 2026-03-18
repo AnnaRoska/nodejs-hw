@@ -4,7 +4,7 @@ import {
   getAllNotesSchema,
   noteIdSchema,
   createNoteSchema,
-  deleteNoteSchema,
+  //deleteNoteSchema,
   updateNoteSchema,
 } from '../validations/notesValidation.js';
 import { 
@@ -29,7 +29,7 @@ router.get('/notes', celebrate(getAllNotesSchema), getAllNotes);
 router.get('/notes/:noteId', celebrate(noteIdSchema), getNoteById);
 
 /* DELETE /notes/:noteId */
-router.delete('/notes/:noteId', celebrate(deleteNoteSchema), deleteNote);
+router.delete('/notes/:noteId', celebrate(noteIdSchema), deleteNote);
 
 /* POST /notes */
 router.post('/notes', celebrate(createNoteSchema), createNote);
