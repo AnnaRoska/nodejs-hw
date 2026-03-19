@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
+import {upload} from "../middleware/multer.js";
 import {
   getAllNotesSchema,
   noteIdSchema,
   createNoteSchema,
-  //deleteNoteSchema,
   updateNoteSchema,
 } from '../validations/notesValidation.js';
 import { 
@@ -37,7 +37,16 @@ router.post('/notes', celebrate(createNoteSchema), createNote);
 /* PATCH /notes/:noteId */
 router.patch('/notes/:noteId', celebrate(updateNoteSchema), updateNote);
 
+router.post('/notes', upload.array('photos', 10), (req, res, next) => {
+  // req.files — масив файлів
+});
 
+router.post('/notes', upload.fields([
+  { name: 'avatar', maxCount: 1 },
+  { name: 'gallery', maxCount: 8 }
+]), (req, res, next) => {
+  // req.files.avatar, req.files.gallery
+});
 
 
 export default router;

@@ -11,6 +11,8 @@ import { errors } from 'celebrate';
 
 import authRoutes from './routes/authRoutes.js';
 import cookieParser from "cookie-parser";
+import userRoutes from './routes/userRoutes.js';
+
 
 const app = express();
 const PORT = Number.parseInt(process.env.PORT, 10) || 3000;
@@ -25,9 +27,9 @@ app.use(cors());         // 3. Дозвіл для запитів з інших 
 
 // підключаємо групу маршрутів для роботи з нотатками
 app.use(notesRoutes);
-
 app.use(authRoutes);
-  
+app.use(userRoutes);
+
 // 404 — якщо маршрут не знайдено
 app.use(notFoundHandler);
 
